@@ -487,7 +487,7 @@ echo
 ::
 :: Prevent unencrypted passwords being sent to third-party SMB servers
 :: This could impact access to consumer-grade file shares but it's a recommended setting
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v EnablePlainTextPassword /t REG_DWORD /d 0 /f
+:: reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v EnablePlainTextPassword /t REG_DWORD /d 0 /f
 ::
 :: Prevent guest logons to SMB servers
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
@@ -520,7 +520,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v
 :: reg add "HKLM\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 0 /f
 ::
 :: Disable internet connection sharing
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections" /v NC_ShowSharedAccessUI /t REG_DWORD /d 0 /f
+:: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections" /v NC_ShowSharedAccessUI /t REG_DWORD /d 0 /f
 ::
 :: Always re-process Group Policy even if no changes
 :: Commented out as consumers don't typically use GPO
@@ -542,7 +542,7 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections" /v NC_Sho
 :: Enforce LDAP client signing
 :: Commented out as most consumers don't use LDAP auth
 :: reg add "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" /v LDAPClientIntegrity /t REG_DWORD /d 1 /f
-::
+
 ::#######################################################################
 :: References
 ::#######################################################################
@@ -571,9 +571,6 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections" /v NC_Sho
 :: Debloating
 :: https://blog.danic.net/how-windows-10-pro-installs-unwanted-apps-candy-crush-and-how-you-stop-it/
 
-:: Frameworks and benchmarks
-:: STIG https://www.stigviewer.com/stig/windows_10/
-::
 echo
 echo Done!
 pause
