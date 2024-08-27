@@ -472,7 +472,7 @@ powershell.exe -command "Get-AppxPackage *ActiproSoftware* -AllUsers | Remove-Ap
 powershell.exe -command "Get-AppxPackage *EclipseManager* -AllUsers | Remove-AppxPackage"
 powershell.exe -command "Get-AppxPackage *SpotifyAB.SpotifyMusic* -AllUsers | Remove-AppxPackage"
 powershell.exe -command "Get-AppxPackage *king.com.* -AllUsers | Remove-AppxPackage"
-powershell.exe -command "Get-AppxPackage *Microsoft.NET.Native.Framework.1.* -AllUsers | Remove-AppxPackage"
+::powershell.exe -command "Get-AppxPackage *Microsoft.NET.Native.Framework.1.* -AllUsers | Remove-AppxPackage"
 
 echo
 echo Extra settings
@@ -480,65 +480,65 @@ echo
 ::#######################################################################
 :: Extra settings commented out but worth considering
 ::#######################################################################
-::
+
 :: Enforce NTLMv2 and LM authentication
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
 :: reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v LmCompatibilityLevel /t REG_DWORD /d 5 /f
-::
+
 :: Prevent unencrypted passwords being sent to third-party SMB servers
 :: This could impact access to consumer-grade file shares but it's a recommended setting
-:: reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v EnablePlainTextPassword /t REG_DWORD /d 0 /f
-::
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" /v EnablePlainTextPassword /t REG_DWORD /d 0 /f
+
 :: Prevent guest logons to SMB servers
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation" /v AllowInsecureGuestAuth /t REG_DWORD /d 0 /f
-::
+
 :: Force SMB server signing
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
 :: reg add "HKLM\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" /v RequireSecuritySignature /t REG_DWORD /d 1 /f
-::
+
 :: Enable Windows Defender Application Guard
 :: This setting is commented out as it enables subset of DC/CG which renders other virtualization products unusable. Can be enabled if you don't use those
 :: powershell.exe Enable-WindowsOptionalFeature -online -FeatureName Windows-Defender-ApplicationGuard -norestart
-::
+
 :: Enable Windows Defender Credential Guard
 :: This setting is commented out as it enables subset of DC/CG which renders other virtualization products unusable. Can be enabled if you don't use those
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" /v EnableVirtualizationBasedSecurity /t REG_DWORD /d 1 /f
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" /v RequirePlatformSecurityFeatures /t REG_DWORD /d 3 /f
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard" /v LsaCfgFlags /t REG_DWORD /d 1 /f
-::
+
 :: The following variant also enables forced ASLR and CFG but causes issues with several third party apps
 :: powershell.exe Set-Processmitigation -System -Enable DEP,CFG,ForceRelocateImages,BottomUp,SEHOP
-::
+
 :: Block executable files from running unless they meet a prevalence, age, or trusted list criterion
 :: This one is commented out for now as I need to research and test more to determine potential impact
 :: powershell.exe Add-MpPreference -AttackSurfaceReductionRules_Ids 01443614-cd74-433a-b99e-2ecdc07bfc25 -AttackSurfaceReductionRules_Actions Enabled
-::
+
 :: Enable Windows Defender real time monitoring
 :: Commented out given consumers often run third party anti-virus. You can run either.
 :: powershell.exe -command "Set-MpPreference -DisableRealtimeMonitoring $false"
 :: reg add "HKLM\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" /v DisableRealtimeMonitoring /t REG_DWORD /d 0 /f
-::
+
 :: Disable internet connection sharing
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Network Connections" /v NC_ShowSharedAccessUI /t REG_DWORD /d 0 /f
-::
+
 :: Always re-process Group Policy even if no changes
 :: Commented out as consumers don't typically use GPO
 :: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}" /v NoGPOListChanges /t REG_DWORD /d 0 /f
-::
-:: Force logoff if smart card removed
+
+:: Force lock if smart card removed
 :: Set to "2" for logoff, set to "1" for lock
 :: Commented out as consumers don't typically use smart cards
-:: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v SCRemoveOption /t REG_DWORD /d 2 /f
-::
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" /v SCRemoveOption /t REG_DWORD /d 1 /f
+
 :: Restrict privileged local admin tokens being used from network
 :: Commented out as it only works on domain-joined assets
 :: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 0 /f
-::
+
 :: Ensure outgoing secure channel traffic is encrypted
 :: Commented out as it only works on domain-joined assets
 :: reg add "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" /v RequireSignOrSeal /t REG_DWORD /d 1 /f
-::
+
 :: Enforce LDAP client signing
 :: Commented out as most consumers don't use LDAP auth
 :: reg add "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" /v LDAPClientIntegrity /t REG_DWORD /d 1 /f
@@ -546,10 +546,10 @@ echo
 ::#######################################################################
 :: References
 ::#######################################################################
-::
+
 :: LLMNR
 :: https://www.blackhillsinfosec.com/how-to-disable-llmnr-why-you-want-to/
-::
+
 :: Windows Defender References
 :: ASR Rules https://www.darkoperator.com/blog/2017/11/11/windows-defender-exploit-guard-asr-rules-for-office
 :: ASR and Exploit Guard https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-exploit-guard/attack-surface-reduction-exploit-guard
@@ -560,14 +560,14 @@ echo
 :: Defender exploit protection https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-exploit-guard/customize-exploit-protection
 :: Application Guard https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-guard/install-wd-app-guard
 :: Defender cmdline https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-antivirus/command-line-arguments-windows-defender-antivirus
-::
+
 :: General hardening references
 :: LSA Protection https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn408187(v=ws.11)?redirectedfrom=MSDN
-::
+
 :: Microsoft Office References:
 :: Disable DDE https://gist.github.com/wdormann/732bb88d9b5dd5a66c9f1e1498f31a1b
 :: Disable macros https://decentsecurity.com/block-office-macros/
-::
+
 :: Debloating
 :: https://blog.danic.net/how-windows-10-pro-installs-unwanted-apps-candy-crush-and-how-you-stop-it/
 
