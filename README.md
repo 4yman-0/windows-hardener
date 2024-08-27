@@ -3,8 +3,8 @@ Original code from [this GitHub repository](https://github.com/fishilico/generic
 
 ## About
 > My objective is to secure/harden
-> Windows 10 as much as possible while not impacting usabilityat all.
-> (Think being able to run on this computer's of family members so
+> Windows 10 as much as possible while not impacting usability at all.
+> (Think being able to run this on family members' computers to
 > secure them but not increase the chances of them having to call you to
 > troubleshoot something related to it later on).
 
